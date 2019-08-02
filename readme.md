@@ -1,6 +1,5 @@
 # Find A Place
 ![Sample Notifications](https://cdn.jsdelivr.net/gh/jhcccc/FindAPlace@master/screenshot.png)
-*LRS+ vs Official LRS Front Page*
 A notification tool for McGill University course registration. Get a message via Telegram, when there's a space in the course you wish to register.
 
 # Dependency
