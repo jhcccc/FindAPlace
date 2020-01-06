@@ -3,11 +3,11 @@
 //fill in credential
 const USR = "@mail.mcgill.ca";
 const PW = "";
-const TERM = "201909";
+const TERM = "202001";
 //fill in course name, number and CRNs
 const SUBJ = "MATH";
 const NUMBER = "323";
-const CRNList = ['27944'];
+const CRNList = ['19815'];
 
 let fs = require('fs');
 const pptr = require('puppeteer');
@@ -21,14 +21,14 @@ const pptr = require('puppeteer');
 
   //log in minerva
   await page.goto(baseURL + 'twbkwbis.P_WWWLogin');
+  await page.waitForSelector('#mcg_un');
   await page.type('#mcg_un', USR);
   await page.type('#mcg_pw', PW);
   await page.click('#mcg_un_submit');
 
   //Choose Term
   await page.goto(baseURL + 'bwskfcls.p_sel_crse_search');
-  await page.waitForSelector("#term_input_id");
-  await page.select('#term_input_id', TERM);
+  await page.select('select[name="p_term"]', TERM);
   const submitTerm = (await page.$$("input[type='submit']"))[1];
   await submitTerm.click();
 
