@@ -37,11 +37,14 @@ function handleCheckCourse(ctx) {
       .catch(err=>{
         console.log(err);
         ctx.reply(JSON.stringify(err));
+        ctx.reply(`Will check again in ${Math.round(timeGap/60000)} minutes`);
+        setTimeout(()=>handleCheckCourse(ctx), timeGap);
       });
 }
 //subject and CRN are hard-coded for now
 async function checkCourse(){
-  const browser = await pptr.launch({headless:false});
+  //{headless:false}
+  const browser = await pptr.launch();
   const page = await browser.newPage();
   page.setDefaultTimeout(60000)
   const baseURL = 'https://horizon.mcgill.ca/pban1/'
@@ -52,8 +55,10 @@ async function checkCourse(){
   await page.waitForSelector('#mcg_pw');
   await page.type('#mcg_un', USR);
   await page.type('#mcg_pw', PW);
+  await page.waitForSelector('#mcg_un_submit');
   await page.click('#mcg_un_submit');
-
+  //wait for login success
+  await page.waitForSelector('.menuplaintable');
   //Choose Term
   await page.goto(baseURL + 'bwskfcls.p_sel_crse_search');
   await page.waitForSelector('select[name="p_term"]');
