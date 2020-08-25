@@ -41,7 +41,7 @@ function handleCheckCourse(ctx) {
 }
 //subject and CRN are hard-coded for now
 async function checkCourse(){
-  const browser = await pptr.launch();
+  const browser = await pptr.launch({headless:false});
   const page = await browser.newPage();
   page.setDefaultTimeout(60000)
   const baseURL = 'https://horizon.mcgill.ca/pban1/'
@@ -56,13 +56,15 @@ async function checkCourse(){
 
   //Choose Term
   await page.goto(baseURL + 'bwskfcls.p_sel_crse_search');
-  await page.waitForSelector('#select[name="p_term"]');
+  await page.waitForSelector('select[name="p_term"]');
   await page.select('select[name="p_term"]', TERM);
   const submitTerm = (await page.$$("input[type='submit']"))[1];
   await submitTerm.click();
 
   //Choose Subject
   await page.waitForSelector("#subj_id");
+  //do twice to be sure?
+  await page.select('#subj_id', SUBJ);
   await page.select('#subj_id', SUBJ);
   await page.waitForSelector("input[value='Course Search']");
   await page.click("input[value='Course Search']");
